@@ -13,6 +13,19 @@ services:
     networks:
       - default
 
+  next:
+    build:
+      context: ./kaku-frontend
+    volumes:
+      - ./kaku-frontend:/app
+    ports:
+      - "8000:3000"
+      - "8001:3001"
+    tty: true
+    stdin_open: true
+    networks:
+      - default
+
 networks:
   default:
     driver: bridge
