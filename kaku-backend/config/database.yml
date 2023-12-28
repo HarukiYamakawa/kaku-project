@@ -8,11 +8,11 @@ default: &default
 development:
   <<: *default
   host: mysql_db
-  database: mydatabase
+  database: db_development
   password: password
 
 test:
   <<: *default
   host: mysql_db
-  database: myapp_test
+  database: db_test
   password: password
