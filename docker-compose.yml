@@ -5,7 +5,7 @@ services:
       context: ./kaku-backend
     command: tail -f /dev/null
     volumes:
-      - ./rails:/myapp
+      - ./kaku-backend:/app
     ports:
       - 3000:3000
     tty: true
