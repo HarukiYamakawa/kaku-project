@@ -5,6 +5,6 @@ threads min_threads_count, max_threads_count
 environment ENV.fetch("RAILS_ENV") { "development" }
 port        ENV.fetch("PORT") { 3000 }
 
-pidfile ENV.fetch("PIDFILE") { "#{app_root}/tmp/pids/server.pid" }
+pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
 plugin :tmp_restart
