@@ -1,0 +1,18 @@
+version: '3'
+services:
+  rails:
+    build:
+      context: ./kaku-backend
+    command: tail -f /dev/null
+    volumes:
+      - ./rails:/myapp
+    ports:
+      - 3000:3000
+    tty: true
+    stdin_open: true
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
