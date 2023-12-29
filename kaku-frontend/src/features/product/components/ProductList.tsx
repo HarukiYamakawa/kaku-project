@@ -11,11 +11,11 @@ const ProductList = async () => {
         <h1>[商品一覧]</h1>
         <ul>
           {productList.map((product: Product) => (
+            <Link href={`/product/${product.id}`}>
             <li key={product.id}>
-              <Link href={`/product/${product.id}`}>
-                {product.name} - {product.price}
-              </Link>
+              {product.name} - {product.price}
             </li>
+            </Link>
           ))}
         </ul>
       </div>
