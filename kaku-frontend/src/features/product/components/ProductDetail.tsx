@@ -1,11 +1,13 @@
 'use client';
 import {Product} from '../types/Product';
 import {getProduct} from '../api/get-product';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
+import { useRouter } from 'next/navigation';
 
 const ProductDetail: React.FC<{id: string}> = ({id}) => {
     const [product, setProduct] = useState<Product>({id: '', name: '', price: 0, description: '', image_url: ''});
     const [error, setError] = useState<string>();
+    const router = useRouter();
 
     useEffect(() => {
       const fetchProduct = async () => {
@@ -29,6 +31,7 @@ const ProductDetail: React.FC<{id: string}> = ({id}) => {
           </li>
         </ul>
         {error && <p>{error}</p>}
+        <button onClick={() => router.back()}>戻る</button>
       </div>
     )
 }
