@@ -9,7 +9,7 @@ describe('Footer Component', () => {
     render(<Footer />);
 
     // フッター内のテキストが表示されているか確認
-    const footerText = screen.getByText('Kaku-203');
+    const footerText = screen.getByText('Kaku-2023');
     expect(footerText).toBeInTheDocument();
   });
 });
