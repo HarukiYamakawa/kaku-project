@@ -4,3 +4,17 @@
 require_relative 'config/application'
 
 Rails.application.load_tasks
+
+desc "Start development puma server"
+task :run_dev do
+  sh "bundle exec rails s -b '0.0.0.0'"
+end
+
+# desc "Start production puma server"
+# task :run_prod do
+#   puts "run db:migrate"
+#   sh 'bundle exec rails db:migrate RAILS_ENV=production'
+
+#   puts "run puma"
+#   sh 'bundle exec puma -C config/puma.rb'
+# end
