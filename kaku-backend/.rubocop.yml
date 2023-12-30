@@ -106,6 +106,9 @@ Lint/RaiseException:
 Lint/StructNewOverride:
   Enabled: true
 
+Style/GlobalVars:
+  Enabled: false
+
 Style/AsciiComments:
   Enabled: false
 
