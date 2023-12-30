@@ -49,17 +49,6 @@ services:
     networks:
       - default
 
-  nginx:
-    build:
-      context: ./kaku-proxy
-    ports:
-      - "80:80"
-    tty: true
-    networks:
-      - default
-    volumes:
-      - ./kaku-proxy/nginx.conf:/etc/nginx/nginx.conf
-
 volumes:
   mysql_vloume:
   redis_vloume:
