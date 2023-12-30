@@ -5,8 +5,7 @@ class Api::V1::ProductsController < ApplicationController
       cached_products = $redis.get(redis_key)
   
       if cached_products.nil?
-        # Active Model SerializersやJbuilderを使用してシリアライズ
-        products = Product.all # 必要に応じてクエリを最適化
+        products = Product.all
         serialized_products = ActiveModelSerializers::SerializableResource.new(products).to_json
         $redis.set(redis_key, serialized_products)
         $redis.expire(redis_key, 10.seconds.to_i)
@@ -14,8 +13,7 @@ class Api::V1::ProductsController < ApplicationController
         products = JSON.parse(cached_products)
       end
     rescue => e
-      Rails.logger.error "Redis error: #{e}"
-      products = Product.all # Redisエラー時のフォールバック
+      products = Product.all
     end
     render json: products
   end
