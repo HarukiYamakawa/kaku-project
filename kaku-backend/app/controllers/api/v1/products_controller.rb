@@ -22,6 +22,7 @@ class Api::V1::ProductsController < ApplicationController
 
   def show
     product = Product.find_by(id: params[:id])
+    response.headers["Cache-Control"] = "public, s-maxage=60, stale-while-revalidate=60"
     render json: product
   end
 end
