@@ -3,7 +3,7 @@ class Api::V1::ProductsController < ApplicationController
     redis_key = 'products_list'
     begin
       cached_products = $redis.get(redis_key)
-  
+
       if cached_products.nil?
         products = Product.all
         serialized_products = ActiveModelSerializers::SerializableResource.new(products).to_json
@@ -12,7 +12,7 @@ class Api::V1::ProductsController < ApplicationController
       else
         products = JSON.parse(cached_products)
       end
-    rescue => e
+    rescue StandardError
       products = Product.all
     end
     render json: products
@@ -20,7 +20,7 @@ class Api::V1::ProductsController < ApplicationController
 
   def show
     product = Product.find_by(id: params[:id])
-    response.headers["Cache-Control"] = "public, max-age=60, s-maxage=60, stale-while-revalidate=60"
+    response.headers['Cache-Control'] = 'public, max-age=60, s-maxage=60, stale-while-revalidate=60'
     render json: product
   end
 end
