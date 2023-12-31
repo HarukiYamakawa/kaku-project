@@ -49,3 +49,11 @@ output "private_subnet_vpc_endpoint_1_id" {
 output "private_subnet_vpc_endpoint_2_id" {
     value = "${aws_subnet.private_subnet_vpc_endpoint_2.id}"
 }
+
+output "route_nodejs_id" {
+    value = "${aws_route_table.route_nodejs.id}"
+}
+
+output "route_puma_id" {
+    value = "${aws_route_table.route_puma.id}"
+}
