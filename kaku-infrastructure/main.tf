@@ -10,3 +10,11 @@ terraform {
 provider "aws" {
   region = "ap-northeast-1"
 }
+
+module "network" {
+  source = "./module/network"
+
+  name_prefix = var.name_prefix
+  tag_name = var.tag_name
+  tag_group = var.tag_group
+}
