@@ -20,6 +20,9 @@ locals {
   mysql_subnet_1_cidr = "10.0.7.0/24"
   mysql_subnet_2_cidr = "10.0.8.0/24"
 
-  vpc_endpoint_subnet_1_cidr = "10.0.9.0/24"
-  vpc_endpoint_subnet_2_cidr = "10.0.10.0/24"
+  redis_subnet_1_cidr = "10.0.9.0/24"
+  redis_subnet_2_cidr = "10.0.10.0/24"
+
+  vpc_endpoint_subnet_1_cidr = "10.0.11.0/24"
+  vpc_endpoint_subnet_2_cidr = "10.0.12.0/24"
 }
