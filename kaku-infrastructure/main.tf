@@ -28,3 +28,16 @@ module "security-group" {
 
   vpc_id = module.network.vpc_id
 }
+
+module "alb" {
+  source = "./module/alb"
+
+  name_prefix = var.name_prefix
+  tag_name = var.tag_name
+  tag_group = var.tag_group
+
+  vpc_id = module.network.vpc_id
+  subnet_ingress_1_id = module.network.public_subnet_ingress_1_id
+  subnet_ingress_2_id = module.network.public_subnet_ingress_2_id
+  sg_alb_id = module.security-group.sg_alb_id
+}
