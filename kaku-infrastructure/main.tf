@@ -77,3 +77,15 @@ module "ecr" {
   tag_name = var.tag_name
   tag_group = var.tag_group
 }
+
+module "cloud-watch-logs" {
+  source = "./module/cloud-watch-logs"
+
+  name_prefix = var.name_prefix
+}
+
+module "iam" {
+  source = "./module/iam"
+
+  name_prefix = var.name_prefix
+}
