@@ -34,7 +34,7 @@ resource "aws_rds_cluster" "default" {
   port = 3306
 }
 
-# # RDS Aurora プライマリインスタンスの定義
+# RDS Aurora プライマリインスタンスの定義
 # resource "aws_rds_cluster_instance" "primary_instances" {
 #   identifier         = "${var.name_prefix}-rds-cluster-primary"
 #   cluster_identifier = aws_rds_cluster.default.id
