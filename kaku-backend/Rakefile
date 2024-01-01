@@ -10,11 +10,17 @@ task run_dev: :environment do
   sh "bundle exec rails s -b '0.0.0.0'"
 end
 
-# desc "Start production puma server"
-# task :run_prod do
-#   puts "run db:migrate"
-#   sh 'bundle exec rails db:migrate RAILS_ENV=production'
+desc "First setup production puma server"
+task :run_prod_first_setup do
+  puts "run tail"
+  sh 'tail -f /dev/null'
+end
 
-#   puts "run puma"
-#   sh 'bundle exec puma -C config/puma.rb'
-# end
+desc "Start production puma server"
+task :run_prod do
+  puts "run db:migrate"
+  sh 'bundle exec rails db:migrate'
+
+  puts "run puma"
+  sh 'bundle exec puma -C config/puma.rb'
+end
