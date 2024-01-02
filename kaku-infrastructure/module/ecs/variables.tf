@@ -37,6 +37,7 @@ variable task_container_memory_puma {}
 variable task_container_cpu_puma {}
 variable task_count_puma {}
 variable task_health_check_grace_period_seconds_puma {}
+variable service_discovery_arn {}
 
 # variable task_cpu_nodejs {}
 # variable task_memory_nodejs {}
