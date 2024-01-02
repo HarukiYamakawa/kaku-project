@@ -23,3 +23,12 @@ data "aws_route53_zone" "default" {
 data "aws_acm_certificate" "default" {
   domain   = data.aws_ssm_parameter.domain_name.value
 }
+
+
+data "aws_ssm_parameter" "next_public_rails_api_url" {
+  name = "next-public-rails-api-url"
+}
+
+data "aws_ssm_parameter" "next_private_rails_api_url" {
+  name = "next-private-rails-api-url"
+}

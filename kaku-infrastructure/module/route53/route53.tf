@@ -16,6 +16,7 @@ resource "aws_service_discovery_private_dns_namespace" "default" {
   vpc  = var.vpc_id
 }
 
+#サービスディスカバリエントリを作成
 resource "aws_service_discovery_service" "default" {
   name              = var.service_discovery_sub_domain_name
   dns_config {
@@ -24,6 +25,7 @@ resource "aws_service_discovery_service" "default" {
       ttl  = 10
       type = "A"
     }
+    routing_policy = "MULTIVALUE"
   }
 }
 
