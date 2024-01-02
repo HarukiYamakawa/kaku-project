@@ -1,17 +1,3 @@
-#secret managerからDBの情報を取得
-data "aws_secretsmanager_secret" "db_secret" {
-  name = "rds!cluster-e7b5a68b-3639-48d1-931c-175d9de567f1"
-}
-
-data "aws_secretsmanager_secret_version" "db_secret_id" {
-  secret_id = data.aws_secretsmanager_secret.db_secret.id
-}
-
-locals {
-  db_secret = jsondecode(data.aws_secretsmanager_secret_version.db_secret_id.secret_string)
-  username = local.db_secret.username
-  password = local.db_secret.password
-}
 
 #バックエンドコンテナ用のタスク定義
 resource "aws_ecs_task_definition" "task_puma" {
@@ -21,6 +7,7 @@ resource "aws_ecs_task_definition" "task_puma" {
   cpu    = "${var.task_cpu_puma}"
   memory = "${var.task_memory_puma}"
   execution_role_arn    = "${var.execution_role_arn}"
+  task_role_arn         = "${var.task_role_arn}"
 
   container_definitions = jsonencode([{
     name  = "kaku_puma",
@@ -40,9 +27,19 @@ resource "aws_ecs_task_definition" "task_puma" {
       options = {
         "awslogs-group"         = "${var.cloudwatch_log_group_arn_puma}",
         "awslogs-region"        = "ap-northeast-1",
-        "awslogs-stream-prefix" = "${var.name_prefix}-puma"
+        "awslogs-stream-prefix" = "${var.name_prefix}-puma-task"
       }
     },
+    secrets     = [
+      {
+        name= "DATABASE_USERNAME",
+        valueFrom = "${var.db_secret_username}"
+      },
+      {
+        name= "DATABASE_PASSWORD",
+        valueFrom= "${var.db_secret_password}"
+      }
+    ],
     environment = [
       {
         name  = "DATABASE_HOST",
@@ -53,12 +50,8 @@ resource "aws_ecs_task_definition" "task_puma" {
         value = "${var.db_name}"
       },
       {
-        name      = "DATABASE_USERNAME",
-        valueFrom = local.username
-      },
-      {
-        name      = "DATABASE_PASSWORD",
-        valueFrom = local.password
+        name      = "FRONT_DOMAIN",
+        value = "https://${var.domain_name}"
       }
     ]
   }])
@@ -86,6 +79,8 @@ resource "aws_ecs_service" "service_puma" {
   health_check_grace_period_seconds = "${var.task_health_check_grace_period_seconds_puma}"
 
 	cluster = aws_ecs_cluster.cluster_puma.id
+
+  enable_execute_command = true
 
 	network_configuration {
 		subnets         = [var.subnet_puma_1_id, var.subnet_puma_2_id]

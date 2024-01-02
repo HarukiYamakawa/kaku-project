@@ -1,11 +1,11 @@
 data "aws_route53_zone" "default" {
-  name         = "hyo-gaku.com"
+  name         = var.domain_name
   private_zone = false
 }
 
 resource "aws_route53_record" "default" {
   zone_id = data.aws_route53_zone.default.zone_id
-  name    = "hyo-gaku.com"
+  name    = var.domain_name
   type    = "A"
   alias {
     name                   = var.alb_dns_name

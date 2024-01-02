@@ -34,15 +34,15 @@ resource "aws_rds_cluster" "default" {
   port = 3306
 }
 
-# RDS Aurora プライマリインスタンスの定義
-# resource "aws_rds_cluster_instance" "primary_instances" {
-#   identifier         = "${var.name_prefix}-rds-cluster-primary"
-#   cluster_identifier = aws_rds_cluster.default.id
-#   instance_class     = "db.t3.small"
-#   engine             = aws_rds_cluster.default.engine
-#   engine_version     = aws_rds_cluster.default.engine_version
-#   publicly_accessible = false
-# }
+#RDS Aurora プライマリインスタンスの定義
+resource "aws_rds_cluster_instance" "primary_instances" {
+  identifier         = "${var.name_prefix}-rds-cluster-primary"
+  cluster_identifier = aws_rds_cluster.default.id
+  instance_class     = "db.t3.medium"
+  engine             = aws_rds_cluster.default.engine
+  engine_version     = aws_rds_cluster.default.engine_version
+  publicly_accessible = false
+}
 
 
 # # RDS Aurora リードレプリカの定義

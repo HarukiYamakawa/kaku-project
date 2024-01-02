@@ -6,3 +6,5 @@ variable vpc_id {}
 variable subnet_ingress_1_id {}
 variable subnet_ingress_2_id {}
 variable sg_alb_id {}
+
+variable certificate_arn {}

@@ -15,6 +15,7 @@ variable image_puma {}
 # variable image_nodejs {}
 
 variable execution_role_arn {}
+variable task_role_arn {}
 variable cloudwatch_log_group_arn_puma {}
 # variable cloudwatch_log_group_arn_nodejs {}
 
@@ -23,6 +24,11 @@ variable tg_puma_arn {}
 
 variable primary_db_host {}
 variable db_name {}
+
+variable db_secret_username {}
+variable db_secret_password {}
+
+variable domain_name {}
 
 variable task_cpu_puma {}
 variable task_memory_puma {}

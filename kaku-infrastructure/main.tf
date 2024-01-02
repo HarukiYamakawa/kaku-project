@@ -40,6 +40,8 @@ module "alb" {
   subnet_ingress_1_id = module.network.public_subnet_ingress_1_id
   subnet_ingress_2_id = module.network.public_subnet_ingress_2_id
   sg_alb_id = module.security-group.sg_alb_id
+
+  certificate_arn = data.aws_acm_certificate.default.arn
 }
 
 module "rds" {
@@ -55,20 +57,20 @@ module "rds" {
   sg_mysql_id = module.security-group.sg_mysql_id
 }
 
-# module "vpc-endpoint" {
-#   source = "./module/vpc-endpoint"
+module "vpc-endpoint" {
+  source = "./module/vpc-endpoint"
 
-#   name_prefix = var.name_prefix
-#   tag_name = var.tag_name
-#   tag_group = var.tag_group
+  name_prefix = var.name_prefix
+  tag_name = var.tag_name
+  tag_group = var.tag_group
 
-#   vpc_id = module.network.vpc_id
-#   subnet_vpc_endpoint_1_id = module.network.private_subnet_vpc_endpoint_1_id
-#   subnet_vpc_endpoint_2_id = module.network.private_subnet_vpc_endpoint_2_id
-#   sg_vpc_endpoint_id = module.security-group.sg_vpc_endpoint_id
-#   route_nodejs_id = module.network.route_nodejs_id
-#   route_puma_id = module.network.route_puma_id
-# }
+  vpc_id = module.network.vpc_id
+  subnet_vpc_endpoint_1_id = module.network.private_subnet_vpc_endpoint_1_id
+  subnet_vpc_endpoint_2_id = module.network.private_subnet_vpc_endpoint_2_id
+  sg_vpc_endpoint_id = module.security-group.sg_vpc_endpoint_id
+  route_nodejs_id = module.network.route_nodejs_id
+  route_puma_id = module.network.route_puma_id
+}
 
 module "ecr" {
   source = "./module/ecr"
@@ -95,6 +97,7 @@ module "route53" {
 
   alb_dns_name = module.alb.alb_dns_name
   alb_zone_id = module.alb.alb_zone_id
+  domain_name = data.aws_ssm_parameter.domain_name.value
 }
 
 module "ecs" {
@@ -111,10 +114,16 @@ module "ecs" {
   primary_db_host = module.rds.primary_db_host
   db_name = module.rds.db_name
 
+  db_secret_username = "${data.aws_secretsmanager_secret_version.db_secret_id.arn}:username::"
+  db_secret_password = "${data.aws_secretsmanager_secret_version.db_secret_id.arn}:password::"
+
+  domain_name = data.aws_ssm_parameter.domain_name.value
+
   #pumaのタスク定義用
   sg_puma_id = module.security-group.sg_puma_id
   image_puma = var.image_puma
   execution_role_arn = module.iam.ecs_task_execution_role_arn
+  task_role_arn = module.iam.ecs_task_role_arn
   cloudwatch_log_group_arn_puma = module.cloud-watch-logs.puma_log_group
   tg_puma_arn = module.alb.tg_puma_arn
   task_cpu_puma = var.task_cpu_puma

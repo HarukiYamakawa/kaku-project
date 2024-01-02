@@ -1,8 +1,3 @@
-#acm証明書を取得
-data "aws_acm_certificate" "default" {
-  domain   = "hyo-gaku.com"
-}
-
 #LBを定義
 resource "aws_lb" "default" {
   name               = "${var.name_prefix}-alb"
@@ -82,7 +77,7 @@ resource "aws_lb_listener" "alb_listener_https" {
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
 
-  certificate_arn = data.aws_acm_certificate.default.arn
+  certificate_arn = var.certificate_arn
 
   default_action {
     type             = "forward"
