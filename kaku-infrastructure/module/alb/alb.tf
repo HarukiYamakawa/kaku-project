@@ -69,11 +69,15 @@ resource "aws_lb_target_group" "tg_puma" {
   }
 }
 
-#port80でのnode.js用のターゲットグループへのリスナー(ルール)を定義
-resource "aws_lb_listener" "alb_listener_http" {
+
+#port443でのnode.js用のターゲットグループへのリスナー(ルール)を定義
+resource "aws_lb_listener" "alb_listener_https" {
   load_balancer_arn = aws_lb.default.arn
-  port              = 80
-  protocol          = "HTTP"
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+
+  certificate_arn = var.certificate_arn
 
   default_action {
     type             = "forward"
@@ -81,9 +85,9 @@ resource "aws_lb_listener" "alb_listener_http" {
   }
 }
 
-#port80のpuma用のターゲットグループへのリスナールールを定義
-resource "aws_lb_listener_rule" "puma_rule" {
-  listener_arn = aws_lb_listener.alb_listener_http.arn
+#port443のpuma用のターゲットグループへのリスナールールを定義
+resource "aws_lb_listener_rule" "https-rule-puma" {
+  listener_arn = aws_lb_listener.alb_listener_https.arn
   priority     = 100
 
   action {
@@ -97,3 +101,21 @@ resource "aws_lb_listener_rule" "puma_rule" {
     }
   }
 }
+
+#port80へのリクエストをport443へリダイレクトするリスナーを定義
+resource "aws_lb_listener" "alb_listener_http" {
+  load_balancer_arn = aws_lb.default.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+

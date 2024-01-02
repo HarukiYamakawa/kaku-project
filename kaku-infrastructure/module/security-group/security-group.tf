@@ -87,6 +87,16 @@ resource "aws_security_group_rule" "sg_puma_ingress_http_from_alb" {
   source_security_group_id = aws_security_group.sg_alb.id
 }
 
+resource "aws_security_group_rule" "sg_puma_ingress_http_from_nodejs" {
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  security_group_id = aws_security_group.sg_puma.id
+  source_security_group_id = aws_security_group.sg_nodejs.id
+}
+
+
 resource "aws_security_group_rule" "sg_puma_egress_all" {
   type              = "egress"
   from_port         = 0
