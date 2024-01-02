@@ -1,4 +1,3 @@
-
 #バックエンドコンテナ用のタスク定義
 resource "aws_ecs_task_definition" "task_puma" {
   family                = "${var.name_prefix}-puma"
