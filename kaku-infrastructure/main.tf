@@ -128,7 +128,8 @@ module "ecs" {
 
   #pumaのタスク定義用
   sg_puma_id = module.security-group.sg_puma_id
-  image_puma = var.image_puma
+  image_puma = module.ecr.puma_repository
+  image_puma_version = var.image_puma_version
   execution_role_arn = module.iam.ecs_task_execution_role_arn
   task_role_arn = module.iam.ecs_task_role_arn
   cloudwatch_log_group_arn_puma = module.cloud-watch-logs.puma_log_group
@@ -144,7 +145,8 @@ module "ecs" {
 
   #nodejsのタスク定義用
   sg_nodejs_id = module.security-group.sg_nodejs_id
-  image_nodejs = var.image_nodejs
+  image_nodejs = module.ecr.nodejs_repository
+  image_nodejs_version = var.image_nodejs_version
   cloudwatch_log_group_arn_nodejs = module.cloud-watch-logs.nodejs_log_group
   tg_nodejs_arn = module.alb.tg_nodejs_arn
   task_cpu_nodejs = var.task_cpu_nodejs

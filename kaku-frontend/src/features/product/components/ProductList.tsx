@@ -1,6 +1,7 @@
 import {Product} from '../types/Product';
 import {getProductList} from '../api/get-product-list';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const ProductList = async () => {
   try {
@@ -14,7 +15,7 @@ const ProductList = async () => {
             <li key={product.id}>
               <Link href={`/product/${product.id}`}>
                 {product.name} - {product.price}
-                <img src={product.image_url} width="200" height="200" />
+                <Image src={product.image_url} alt={product.name} width="200" height="200" />
               </Link>
             </li>
           ))}
