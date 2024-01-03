@@ -27,6 +27,7 @@ const ProductDetail: React.FC<{id: string}> = ({id}) => {
         <ul>
           <li key={product.id}>
             {product.name} - {product.price} <br />
+            <img src={product.image_url} width="200" height="200" />
             {product.description}
           </li>
         </ul>

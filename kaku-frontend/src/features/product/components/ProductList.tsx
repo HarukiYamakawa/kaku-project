@@ -14,6 +14,7 @@ const ProductList = async () => {
             <li key={product.id}>
               <Link href={`/product/${product.id}`}>
                 {product.name} - {product.price}
+                <img src={product.image_url} width="200" height="200" />
               </Link>
             </li>
           ))}
