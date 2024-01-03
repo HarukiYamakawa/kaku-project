@@ -157,3 +157,11 @@ module "ecs" {
   public_rails_api_url = data.aws_ssm_parameter.next_public_rails_api_url.value
   private_rails_api_url = data.aws_ssm_parameter.next_private_rails_api_url.value
 }
+
+module "s3" {
+  source = "./module/s3"
+
+  name_prefix = var.name_prefix
+  tag_name = var.tag_name
+  tag_group = var.tag_group
+}
