@@ -9,11 +9,14 @@ const Header = () => {
       </div>
       <nav className="bg-[#6da332] p-4 ">
         <ul className="flex space-x-2">
-          <li>
+
             <Link href="/product/list">
               <h2>商品一覧</h2>
             </Link>
-          </li>
+            <Link href="/product/registration">
+              <h2>商品登録</h2>
+            </Link>
+
         </ul>
       </nav>
     </header>

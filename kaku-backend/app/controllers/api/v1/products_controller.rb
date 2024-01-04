@@ -23,4 +23,21 @@ class Api::V1::ProductsController < ApplicationController
     response.headers['Cache-Control'] = 'public, max-age=60, s-maxage=60, stale-while-revalidate=60'
     render json: product
   end
+
+  def create
+    registration_params = product_params
+    registration_params[:image_url] = '#'
+    product = Product.new(registration_params)
+    if product.save
+      render json: product, status: :created
+    else
+      render json: { errors: product.errors }, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def product_params
+    params.require(:product).permit(:name, :price, :description, :image_url)
+  end
 end

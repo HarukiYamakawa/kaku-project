@@ -90,6 +90,7 @@ module "iam" {
   source = "./module/iam"
 
   name_prefix = var.name_prefix
+  static_contents_bucket_arn = module.s3.static_contents_bucket_arn
 }
 
 module "route53" {
@@ -166,4 +167,15 @@ module "s3" {
   name_prefix = var.name_prefix
   tag_name = var.tag_name
   tag_group = var.tag_group
+}
+
+module "lambda" {
+  source = "./module/lambda"
+
+  name_prefix = var.name_prefix
+  tag_name = var.tag_name
+  tag_group = var.tag_group
+
+  static_contents_bucket_arn = module.s3.static_contents_bucket_arn
+  lambda_put_image_role_arn = module.iam.lambda_put_image_role_arn
 }
