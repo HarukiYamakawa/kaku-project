@@ -13,10 +13,6 @@ const Header = () => {
             <Link href="/product/list">
               <h2>商品一覧</h2>
             </Link>
-            <Link href="/product/registration">
-              <h2>商品登録</h2>
-            </Link>
-
         </ul>
       </nav>
     </header>

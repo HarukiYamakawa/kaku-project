@@ -121,7 +121,6 @@ module "ecs" {
 
   primary_db_host = module.rds.primary_db_host
   db_name = module.rds.db_name
-  lambda_put_image_url = module.lambda.lambda_put_image_url
 
   db_secret_username = "${data.aws_secretsmanager_secret_version.db_secret_id.arn}:username::"
   db_secret_password = "${data.aws_secretsmanager_secret_version.db_secret_id.arn}:password::"
@@ -170,13 +169,13 @@ module "s3" {
   tag_group = var.tag_group
 }
 
-module "lambda" {
-  source = "./module/lambda"
+# module "lambda" {
+#   source = "./module/lambda"
 
-  name_prefix = var.name_prefix
-  tag_name = var.tag_name
-  tag_group = var.tag_group
+#   name_prefix = var.name_prefix
+#   tag_name = var.tag_name
+#   tag_group = var.tag_group
 
-  static_contents_bucket_arn = module.s3.static_contents_bucket_arn
-  lambda_put_image_role_arn = module.iam.lambda_put_image_role_arn
-}
+#   static_contents_bucket_arn = module.s3.static_contents_bucket_arn
+#   lambda_put_image_role_arn = module.iam.lambda_put_image_role_arn
+# }
