@@ -9,7 +9,7 @@ resource "aws_ecs_task_definition" "task_nodejs" {
 
   container_definitions = jsonencode([{
     name  = "kaku_nodejs",
-    image = "${var.image_nodejs}",
+    image = "${var.image_nodejs}:${var.image_nodejs_version}",
     essential: true,
     memoryReservation = "${var.task_container_memory_reservation_nodejs}",
     memory = "${var.task_container_memory_nodejs}",

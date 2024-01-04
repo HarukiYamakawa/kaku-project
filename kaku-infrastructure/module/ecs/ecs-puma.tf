@@ -10,7 +10,7 @@ resource "aws_ecs_task_definition" "task_puma" {
 
   container_definitions = jsonencode([{
     name  = "kaku_puma",
-    image = "${var.image_puma}",
+    image = "${var.image_puma}:${var.image_puma_version}",
     essential: true,
     memoryReservation = "${var.task_container_memory_reservation_puma}"
     memory = "${var.task_container_memory_puma}",
@@ -51,6 +51,10 @@ resource "aws_ecs_task_definition" "task_puma" {
       {
         name      = "FRONT_DOMAIN",
         value = "https://${var.domain_name}"
+      },
+      {
+        name      = "LAMBDA_PUSH_IMAGE_URL",
+        value = "${var.lambda_put_image_url}"
       }
     ]
   }])

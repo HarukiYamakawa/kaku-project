@@ -3,6 +3,7 @@ import {Product} from '../types/Product';
 import {getProduct} from '../api/get-product';
 import React, { useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const ProductDetail: React.FC<{id: string}> = ({id}) => {
     const [product, setProduct] = useState<Product>({id: '', name: '', price: 0, description: '', image_url: ''});
@@ -27,6 +28,7 @@ const ProductDetail: React.FC<{id: string}> = ({id}) => {
         <ul>
           <li key={product.id}>
             {product.name} - {product.price} <br />
+            <Image src={product.image_url} alt={product.name} width="200" height="200" />
             {product.description}
           </li>
         </ul>

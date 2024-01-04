@@ -90,6 +90,7 @@ module "iam" {
   source = "./module/iam"
 
   name_prefix = var.name_prefix
+  static_contents_bucket_arn = module.s3.static_contents_bucket_arn
 }
 
 module "route53" {
@@ -120,6 +121,7 @@ module "ecs" {
 
   primary_db_host = module.rds.primary_db_host
   db_name = module.rds.db_name
+  lambda_put_image_url = module.lambda.lambda_put_image_url
 
   db_secret_username = "${data.aws_secretsmanager_secret_version.db_secret_id.arn}:username::"
   db_secret_password = "${data.aws_secretsmanager_secret_version.db_secret_id.arn}:password::"
@@ -128,7 +130,8 @@ module "ecs" {
 
   #pumaのタスク定義用
   sg_puma_id = module.security-group.sg_puma_id
-  image_puma = var.image_puma
+  image_puma = module.ecr.puma_repository
+  image_puma_version = var.image_puma_version
   execution_role_arn = module.iam.ecs_task_execution_role_arn
   task_role_arn = module.iam.ecs_task_role_arn
   cloudwatch_log_group_arn_puma = module.cloud-watch-logs.puma_log_group
@@ -144,7 +147,8 @@ module "ecs" {
 
   #nodejsのタスク定義用
   sg_nodejs_id = module.security-group.sg_nodejs_id
-  image_nodejs = var.image_nodejs
+  image_nodejs = module.ecr.nodejs_repository
+  image_nodejs_version = var.image_nodejs_version
   cloudwatch_log_group_arn_nodejs = module.cloud-watch-logs.nodejs_log_group
   tg_nodejs_arn = module.alb.tg_nodejs_arn
   task_cpu_nodejs = var.task_cpu_nodejs
@@ -156,4 +160,23 @@ module "ecs" {
   task_health_check_grace_period_seconds_nodejs = var.task_health_check_grace_period_seconds_nodejs
   public_rails_api_url = data.aws_ssm_parameter.next_public_rails_api_url.value
   private_rails_api_url = data.aws_ssm_parameter.next_private_rails_api_url.value
+}
+
+module "s3" {
+  source = "./module/s3"
+
+  name_prefix = var.name_prefix
+  tag_name = var.tag_name
+  tag_group = var.tag_group
+}
+
+module "lambda" {
+  source = "./module/lambda"
+
+  name_prefix = var.name_prefix
+  tag_name = var.tag_name
+  tag_group = var.tag_group
+
+  static_contents_bucket_arn = module.s3.static_contents_bucket_arn
+  lambda_put_image_role_arn = module.iam.lambda_put_image_role_arn
 }
