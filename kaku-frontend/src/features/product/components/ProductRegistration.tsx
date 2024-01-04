@@ -7,27 +7,27 @@ const ProductRegistration: React.FC = () => {
   const [price, setPrice] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [error, setError] = useState<string>('');
+  const [selectedImage, setSelectedImage] = useState<File>();
 
   const router = useRouter();
 
   const handleRegistration = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
+      const formData = new FormData();
+      formData.append('product[name]', name);
+      formData.append('product[price]', price);
+      formData.append('product[description]', description);
+      if (selectedImage) {
+        formData.append('product[image]', selectedImage);
+      }
       const response = await fetch(process.env.NEXT_PUBLIC_RAILS_API_URL +"/v1/products", {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          product: {
-            name,
-            price,
-            description
-          }
-        }),
+        body: formData,
       });
+      console.log(response);
+      console.log(response.ok);
       if (response.ok) {
-        const data = await response.json();
         router.push(`/`);
       }else{
         console.log("error");
@@ -35,7 +35,7 @@ const ProductRegistration: React.FC = () => {
         setError(errorData.errors || 'Registration failed');
       }
     } catch (err) {
-      console.log("network error");
+      console.log(err);
     }
   }
 
@@ -70,6 +70,20 @@ const ProductRegistration: React.FC = () => {
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2">Image:</label>
+        <input
+          type="file"
+          id="image"
+          className="shadow appearance-none border border-black rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          onChange={(e) => {
+            if (e.target.files) {
+              setSelectedImage(e.target.files[0]);
+            }
+          }}
           required
         />
       </div>

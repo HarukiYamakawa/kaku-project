@@ -26,6 +26,7 @@ variable tg_nodejs_arn {}
 
 variable primary_db_host {}
 variable db_name {}
+variable lambda_put_image_url {}
 
 variable db_secret_username {}
 variable db_secret_password {}

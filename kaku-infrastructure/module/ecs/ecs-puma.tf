@@ -51,6 +51,10 @@ resource "aws_ecs_task_definition" "task_puma" {
       {
         name      = "FRONT_DOMAIN",
         value = "https://${var.domain_name}"
+      },
+      {
+        name      = "LAMBDA_PUSH_IMAGE_URL",
+        value = "${var.lambda_put_image_url}"
       }
     ]
   }])

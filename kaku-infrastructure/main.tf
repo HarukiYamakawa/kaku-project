@@ -121,6 +121,7 @@ module "ecs" {
 
   primary_db_host = module.rds.primary_db_host
   db_name = module.rds.db_name
+  lambda_put_image_url = module.lambda.lambda_put_image_url
 
   db_secret_username = "${data.aws_secretsmanager_secret_version.db_secret_id.arn}:username::"
   db_secret_password = "${data.aws_secretsmanager_secret_version.db_secret_id.arn}:password::"

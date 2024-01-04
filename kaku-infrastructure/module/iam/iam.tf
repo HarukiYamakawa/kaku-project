@@ -121,7 +121,17 @@ resource "aws_iam_policy" "lambda_put_image_role_policy" {
         "${var.static_contents_bucket_arn}",
         "${var.static_contents_bucket_arn}/*"
       ]
-    }]
+    },
+    {
+      Action = [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      Effect = "Allow",
+      Resource = "*"
+    }
+    ]
   })
 }
 

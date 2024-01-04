@@ -1,3 +1,4 @@
+require 'rest-client'
 class Api::V1::ProductsController < ApplicationController
   def index
     redis_key = 'products_list'
@@ -25,11 +26,17 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def create
-    registration_params = product_params
-    registration_params[:image_url] = '#'
-    product = Product.new(registration_params)
+    product = Product.new(product_params)
+
+    if Rails.env.production?
+      lambda_url = ENV['LAMBDA_PUSH_IMAGE_URL']
+      image_file = Base64.strict_encode64(params[:product][:image].read)
+      response = RestClient.post(lambda_url, { image_file: image_file }.to_json, content_type: :json, accept: :json)
+      product.image_url = JSON.parse(response.body)['url']
+    end
+
     if product.save
-      render json: product, status: :created
+      render status: :ok
     else
       render json: { errors: product.errors }, status: :unprocessable_entity
     end
@@ -38,6 +45,6 @@ class Api::V1::ProductsController < ApplicationController
   private
 
   def product_params
-    params.require(:product).permit(:name, :price, :description, :image_url)
+    params.require(:product).permit(:name, :price, :description)
   end
 end
