@@ -51,6 +51,15 @@ jobs:
           docker tag kaku-puma:latest ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_VERSION }}
           docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_VERSION }}
 
+      - name: push nodejs image
+        env:
+          ECR_REGISTRY: ${{ steps.amazon-ecr-login.outputs.registry }}
+          ECR_REPOSITORY: kaku-nodejs
+        run: |
+          docker build -t kaku-nodejs -f ./kaku-frontend/Dockerfile.prod ./kaku-frontend
+          docker tag kaku-nodejs:latest ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_VERSION }}
+          docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_VERSION }}
+
   terraform:
     name: Depploy to AWS ECS
     runs-on: ubuntu-latest
