@@ -1,4 +1,4 @@
-import ProductDetail from '@/features/product/components/ProductDetail';
+import ProductDetail from '../../../features/product/components/ProductDetail';
 const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
     return (
         <div>
