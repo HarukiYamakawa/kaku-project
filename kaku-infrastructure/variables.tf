@@ -16,7 +16,7 @@ variable service_discovery_sub_domain_name {
 
 # pumaのタスク定義用
 variable image_puma_version {
-  default = "v6"
+  default = "51ece0fca3ece2c7b893450c7176af4f4a477113"
 }
 variable task_cpu_puma {
   default = 256
