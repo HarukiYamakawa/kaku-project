@@ -1,0 +1,26 @@
+name: deploy
+
+on:
+  #mainにマージされたときに実行
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: ap-northeast-1
+
+jobs:
+  deploy:
+    name: Depploy to AWS ECS
+    runs-on: ubuntu-latest
+
+    steps:
+      #AWS CLIのセットアップ
+      - name: setup aws cli
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          #Secretsに登録したAWSのアクセスキーIDとシークレットアクセスキーを取得
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          #上記で定義したリージョンの環境変数をセット
+          aws-region: ${{ env.AWS_REGION }}
