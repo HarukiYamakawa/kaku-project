@@ -57,7 +57,7 @@ resource "aws_ecs_task_definition" "task_puma" {
         value = "${var.redis_host}"
       },
       {
-        name = "SESECRET_KEY_BASE",
+        name = "SECRET_KEY_BASE",
         value = "${var.secret_key_base}"
       }
     ]
