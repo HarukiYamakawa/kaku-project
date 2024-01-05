@@ -73,7 +73,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Terraform Apply
-      run: terraform apply -var "image_puma_version=${{ env.IMAGE_VERSION }}" -var "image_node_version=${{ env.IMAGE_VERSION }}" -auto-approve
+      run: terraform apply -var "image_puma_version=${{ env.IMAGE_VERSION }}" -var "image_nodejs_version=${{ env.IMAGE_VERSION }}" -auto-approve
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
