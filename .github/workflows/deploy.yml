@@ -50,6 +50,7 @@ jobs:
         run: |
           docker build -t kaku-puma -f ./kaku-backend/Dockerfile.prod ./kaku-backend
           docker image ls
+          echo ${{ env.IMAGE_TAG }}
           docker tag kaku-puma:latest ${{ env.IMAGE_TAG }}
           docker image ls
           # docker push ${{ env.IMAGE_TAG }}
