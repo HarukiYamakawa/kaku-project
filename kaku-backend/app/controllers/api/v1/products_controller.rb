@@ -15,8 +15,9 @@ class Api::V1::ProductsController < ApplicationController
       end
     rescue StandardError
       products = Product.all
+      products[0].name = 'Redis is not working'
     end
-    render json: products
+    render json: products, status: :ok
   end
 
   def show

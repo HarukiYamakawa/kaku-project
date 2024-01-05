@@ -121,6 +121,7 @@ module "ecs" {
 
   primary_db_host = module.rds.primary_db_host
   db_name = module.rds.db_name
+  redis_host = module.elasti-cashe.redis_endpoint
 
   db_secret_username = "${data.aws_secretsmanager_secret_version.db_secret_id.arn}:username::"
   db_secret_password = "${data.aws_secretsmanager_secret_version.db_secret_id.arn}:password::"
@@ -167,6 +168,18 @@ module "s3" {
   name_prefix = var.name_prefix
   tag_name = var.tag_name
   tag_group = var.tag_group
+}
+
+module "elasti-cashe" {
+  source = "./module/elasti-cashe"
+
+  name_prefix = var.name_prefix
+  tag_name = var.tag_name
+  tag_group = var.tag_group
+
+  subnet_redis_1_id = module.network.private_subnet_redis_1_id
+  subnet_redis_2_id = module.network.private_subnet_redis_2_id
+  sg_redis_id = module.security-group.sg_redis_id
 }
 
 # module "lambda" {

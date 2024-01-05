@@ -16,7 +16,7 @@ variable service_discovery_sub_domain_name {
 
 # pumaのタスク定義用
 variable image_puma_version {
-  default = "v5"
+  default = "v6"
 }
 variable task_cpu_puma {
   default = 256
@@ -35,7 +35,7 @@ variable task_container_cpu_puma {
 }
 variable task_count_puma {
   #タスクの数を指定
-  default = 0
+  default = 1
 }
 variable task_health_check_grace_period_seconds_puma {
   default = 60
@@ -66,7 +66,7 @@ variable task_container_cpu_nodejs {
 }
 variable task_count_nodejs {
   #タスクの数を指定
-  default = 0
+  default = 1
 }
 variable task_health_check_grace_period_seconds_nodejs {
   default = 720
