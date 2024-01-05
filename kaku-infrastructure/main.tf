@@ -122,6 +122,7 @@ module "ecs" {
   primary_db_host = module.rds.primary_db_host
   db_name = module.rds.db_name
   redis_host = module.elasti-cashe.redis_endpoint
+  secret_key_base = data.aws_ssm_parameter.secret_key_base.value
 
   db_secret_username = "${data.aws_secretsmanager_secret_version.db_secret_id.arn}:username::"
   db_secret_password = "${data.aws_secretsmanager_secret_version.db_secret_id.arn}:password::"
