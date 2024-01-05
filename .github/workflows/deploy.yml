@@ -8,6 +8,8 @@ on:
 
 env:
   AWS_REGION: ap-northeast-1
+  #imageのタグをgithubのshaにすることで、常に最新のimageをデプロイする
+  IMAGE_VERSION: ${{ github.sha }}
 
 jobs:
   deploy:
@@ -24,3 +26,28 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           #上記で定義したリージョンの環境変数をセット
           aws-region: ${{ env.AWS_REGION }}
+
+      #デプロイ先の環境によって環境変数を変更
+      #本来はdevelopブランチへのpushなども想定しているが、今回はmainブランチ(prod)のみ
+      - name: Set env var for prod
+        if: github.ref == 'refs/heads/main'
+        run: echo "ENV_NAME=prod" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v2
+      
+      #ECRへのログイン、認証情報はCLIの認証情報が自動で再利用される
+      - uses: aws-actions/amazon-ecr-login@v1
+        id: amazon-ecr-login
+    
+      - name: push puma image
+        env:
+          #ECRのリポジトリURLを環境変数にセット
+          ECR_REGISTRY: ${{ steps.amazon-ecr-login.outputs.registry }}
+          #ECRのリポジトリ名を環境変数にセット
+          ECR_REPOSITORY: kaku-puma
+          #ECRのリポジトリURLとタグを結合したものを環境変数にセット
+          IMAGE_TAG: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_VERSION }}
+        run: |
+          docker build -t kaku-puma -f ./kaku-backend/Dockerfile.prod ./kaku-backend
+          docker tag kaku-puma ${{ env.IMAGE_TAG }}
+          docker push ${{ env.IMAGE_TAG }}
