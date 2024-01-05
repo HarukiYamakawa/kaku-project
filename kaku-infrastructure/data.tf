@@ -32,3 +32,7 @@ data "aws_ssm_parameter" "next_public_rails_api_url" {
 data "aws_ssm_parameter" "next_private_rails_api_url" {
   name = "next-private-rails-api-url"
 }
+
+data "aws_ssm_parameter" "secret_key_base" {
+  name = "secret-key-base"
+}
